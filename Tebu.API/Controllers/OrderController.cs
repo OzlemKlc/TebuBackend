@@ -64,7 +64,16 @@ namespace Tebu.API.Controllers
         [Authorize(Roles = "Worker")]
         public List<OrderDTO> GetWorkerOrders([FromQuery] int count, [FromQuery] int pageIndex)
         {
-            return orderRepository.FindBy(s => s.WorkerId == null || s.WorkerId == currentUserService.User.Id).OrderByDescending(s => s.Id).Skip(pageIndex * count).Take(count).ToList().Select(s => s.ConvertToOrderDTO()).ToList();
+            return orderRepository
+                .FindBy(s => s.WorkerId == null || s.WorkerId == currentUserService.User.Id)
+                .OrderByDescending(s => (s.WorkerId == currentUserService.User.Id && s.DeliveredDate == null) ? 1 : 0)
+                .ThenByDescending(s => s.Id)
+                .Skip(pageIndex * count)
+                .Take(count).ToList()
+                .OrderByDescending(s => (s.WorkerId == currentUserService.User.Id && s.DeliveredDate == null) ? 1 : 0)
+                .ThenByDescending(s => s.Id)
+                .Select(s => s.ConvertToOrderDTO())
+                .ToList();
         }
 
         [HttpPost("change-status")]
@@ -76,7 +85,7 @@ namespace Tebu.API.Controllers
             if (order == null)
                 throw new CustomException("Order not found", 404);
 
-            if (order.WorkerId != null || order.WorkerId != currentUserService.User.Id)
+            if (order.WorkerId != null && order.WorkerId != currentUserService.User.Id)
                 throw new CustomException("Not permitted", 403);
 
             order.WorkerId = currentUserService.User.Id;
@@ -84,6 +93,11 @@ namespace Tebu.API.Controllers
             order.Status = request.OrderStatus;
 
             order.Worker = currentUserService.UserEntity;
+
+            if (order.Status == Enums.OrderStatus.Delivired)
+            {
+                order.DeliveredDate = DateTime.UtcNow;
+            }
 
             orderRepository.SaveChanges();
 
