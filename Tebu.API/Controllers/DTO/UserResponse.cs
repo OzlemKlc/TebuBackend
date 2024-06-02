@@ -4,7 +4,7 @@ using Tebu.API.Service.DTO;
 
 namespace Tebu.API.Controllers.DTO
 {
-    public class CurrentUserResponse
+    public class UserResponse
     {
         public UserDTO User { get; set; }
     }

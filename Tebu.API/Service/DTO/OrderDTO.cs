@@ -1,8 +1,8 @@
 ﻿using Tebu.API.Enums;
 
-namespace Tebu.API.Data.Models
+namespace Tebu.API.Service.DTO
 {
-    public class Order : BaseEntity
+    public class OrderDTO : BaseDTO
     {
         public OrderStatus Status { get; set; }
         public OrderType OrderType { get; set; }
@@ -13,9 +13,9 @@ namespace Tebu.API.Data.Models
         public int AddressId { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime? DeliveredDate { get; set; }
-        public virtual User Costumer { get; set; }
-        public virtual User Worker { get; set; }
-        public virtual Vehicle Vehicle { get; set; }
-        public virtual Address Address { get; set; }
+        public UserDTO Customer { get; set; }
+        public UserDTO? Worker { get; set; }
+        public AddressDTO Address { get; set; }
+        public VehicleDTO Vehicle { get; set; }
     }
 }

@@ -12,7 +12,7 @@ using Tebu.API.Data;
 namespace Tebu.API.Data.Migrations
 {
     [DbContext(typeof(TebuDbContext))]
-    [Migration("20240531220307_Initial")]
+    [Migration("20240601144615_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -70,8 +70,14 @@ namespace Tebu.API.Data.Migrations
                     b.Property<int>("AddressId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("CustomerId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime?>("DeliveredDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("OrderNote")
                         .IsRequired()
@@ -135,7 +141,25 @@ namespace Tebu.API.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("PhoneNumber")
+                        .IsUnique();
+
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "admin",
+                            Name = "admin",
+                            Password = "admin",
+                            PhoneNumber = "admin",
+                            Surname = "admin",
+                            UserRole = 0
+                        });
                 });
 
             modelBuilder.Entity("Tebu.API.Data.Models.Vehicle", b =>
@@ -154,8 +178,9 @@ namespace Tebu.API.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Name")
-                        .HasColumnType("integer");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");

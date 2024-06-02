@@ -26,7 +26,7 @@ namespace Tebu.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<CurrentUserResponse> Login([FromBody] LoginRequest request)
+        public async Task<UserResponse> Login([FromBody] LoginRequest request)
         {
             UserDTO user = userService.GetUser(request.Phone, request.Password);
 
@@ -43,25 +43,25 @@ namespace Tebu.API.Controllers
 
             await HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity));
 
-            return new CurrentUserResponse
+            return new UserResponse
             {
                 User = user
             };
         }
 
         [HttpGet("current-user")]
-        public async Task<CurrentUserResponse> GetCurrentUser()
+        public async Task<UserResponse> GetCurrentUser()
         {
             UserDTO user = currentUserService.User;
 
-            return new CurrentUserResponse
+            return new UserResponse
             {
                 User = user
             };
         }
 
         [HttpPost("register")]
-        public async Task<CurrentUserResponse> Register([FromBody] RegisterRequest request)
+        public async Task<UserResponse> Register([FromBody] RegisterRequest request)
         {
             UserDTO user = userService.Register(request.Password, request.PhoneNumber, request.Email, request.Name, request.Surname, Enums.UserRole.Customer);
 
@@ -78,7 +78,7 @@ namespace Tebu.API.Controllers
 
             await HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity));
 
-            return new CurrentUserResponse
+            return new UserResponse
             {
                 User = user
             };

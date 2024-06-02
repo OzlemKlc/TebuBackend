@@ -2,7 +2,7 @@
 {
     public enum OrderStatus
     {
-        Waiting = 0,
+        WaitingToGetAccepted = 0,
         Accepted = 1,
         GoingToCenter = 2,
         Arrived = 3,

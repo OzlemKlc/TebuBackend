@@ -35,6 +35,12 @@ namespace Tebu.API.Data
                 entity.HasOne(s => s.Vehicle).WithMany(s => s.Orders).HasForeignKey(s => s.VehicleId);
                 entity.HasOne(S => S.Address).WithMany(S => S.Orders).HasForeignKey(S => S.AddressId);
 
+
+                entity.Navigation(s => s.Worker).AutoInclude();
+                entity.Navigation(s => s.Costumer).AutoInclude();
+                entity.Navigation(s => s.Address).AutoInclude();
+                entity.Navigation(s => s.Vehicle).AutoInclude();
+
             });
             modelBuilder.Entity<Address>(entity =>
             {
@@ -48,6 +54,18 @@ namespace Tebu.API.Data
             });
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(BaseEntity).Assembly);
+
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = 1,
+                Email = "admin",
+                Name = "admin",
+                Password = "admin",
+                PhoneNumber = "admin",
+                Surname = "admin",
+                UserRole = Enums.UserRole.Admin
+            });
+
 
             base.OnModelCreating(modelBuilder);
         }

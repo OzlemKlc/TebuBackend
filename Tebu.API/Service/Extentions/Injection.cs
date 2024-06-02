@@ -6,6 +6,7 @@
         {
             services.AddScoped<CurrentUserService>();
             services.AddScoped<UserService>();
+            services.AddScoped<AdminService>();
         }
 
 
