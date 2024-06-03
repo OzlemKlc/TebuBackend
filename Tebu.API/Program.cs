@@ -31,7 +31,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<TebuDbContext>(options =>
 {
-    var conString = "Host=localhost;Port=5432;Database=tebudb;Username=postgres;Password=tamuro174;";
+    var conString = "Host=tebudb.c0ya11pfh1wb.eu-central-1.rds.amazonaws.com;Port=5432;Database=tebudb;Username=postgres;Password=tamuro174;";
     options.UseNpgsql(conString);
 });
 
