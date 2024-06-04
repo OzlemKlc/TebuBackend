@@ -64,7 +64,8 @@ namespace Tebu.API.Controllers
                 Brand = request.Brand,
                 Model = request.Model,
                 Name = request.Name,
-                UserId = currentUserService.User.Id
+                UserId = currentUserService.User.Id,
+                Year = request.Year,
             };
 
             vehicleRepository.Add(vehicle);
